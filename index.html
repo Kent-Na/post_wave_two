@@ -1,0 +1,77 @@
+<html>
+<head>
+	<script type="text/javascript" 
+		src = "third_party/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" 
+		src = "third_party/text-encoding/lib/encoding.js"></script>
+	<script type="text/javascript" 
+		src = "plain_big_text/js_ot_context.js"></script>
+	<script type="text/javascript" 
+		src = "plain_big_text/json.js"></script>
+	<script type="text/javascript" src = "rcp_js/rcp_js.js"></script>
+	<script type="text/javascript" src = "index.js"></script>
+	<link id="css" rel="stylesheet" href="main.css"></link>
+	<meta charset="utf-8"></meta>
+	<title>post wave</title>
+</head>
+<body>
+
+<h1>post wave</h1>
+Or, post post wave.
+<br/>
+<br/>
+
+server status:<div id="server_status">checking...</div>
+server URL:<div id="server_url"></div>
+github:
+<a href="https://github.com/Kent-Na/rcp_js.git">rcp_js</a>
+<a href="https://github.com/Kent-Na/plain_big_text.git">plain_big_text</a>
+<a href="https://github.com/Kent-Na/post_wave_two.git">post_wave_two</a>
+
+<br/>
+<br/>
+
+<div id="list_container">
+	<div class="new_element_box">
+		<input type="text" id="new_handlename" 
+				size=40 placeholder="handlename"/>
+		<br/>
+		<textarea id="new_message_body" wrap="soft" 
+			cols=80 rows=2 placeholder="message (shift+enter to send)"></textarea>
+		<button id="new_element", type="a">new</button>
+	</div>
+	<br/>
+	<div id="end_of_list"></div>
+</div>
+
+<div id="template_container">
+	<br/>
+	<br/>
+	<br/>
+
+	<div id="element_box_template" class="element_box">
+		<div class="element_post_time"></div>
+		<div class="element_handlename"></div>
+		<div  class="element_message_body"></div>
+		<button class="edit_button">edit</button>
+	</div>
+
+	<div id="edit_element_box_template">
+		<input type="text" class="edit_handlename" 
+				size=40 placeholder="handlename"/>
+		<br/>
+		<textarea class="edit_message_body" wrap="soft" 
+			cols=80 rows=2 placeholder="message (shift+enter to update)"></textarea>
+		<button class="delete_button", type="a">delete</button>
+		<button class="done_button", type="a">done</button>
+		<button class="cancel_button", type="a">cancel</button>
+	</div>
+
+<br/>
+
+
+
+</body>
+</html>
+
+
