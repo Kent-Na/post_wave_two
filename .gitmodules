@@ -1,0 +1,6 @@
+[submodule "plain_big_text"]
+	path = plain_big_text
+	url = git@github.com:Kent-Na/plain_big_text.git
+[submodule "rcp_js"]
+	path = rcp_js
+	url = git@github.com:Kent-Na/rcp_js.git
