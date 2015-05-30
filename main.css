@@ -37,19 +37,6 @@ img.title-icon{
 	margin-right:auto;
 }
 
-img{
-	display:inline;
-	margin-left:auto;
-	margin-right:auto;
-}
-
-h2 img{
-	display:inline;
-	vertical-align:middle;
-	padding-left:6px;
-	padding-right:6px;
-}
-
 a{
 	color:#ee7722;
 	font-weight:bold;
@@ -57,6 +44,9 @@ a{
 	word-wrap:break-word;
 }
 
+div.status{
+	display:inline;
+}
 div.element_box{
 	border-style:solid;
 	border-width:1px;
