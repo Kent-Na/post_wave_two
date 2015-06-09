@@ -2,6 +2,7 @@
 //by Kent-Na
 
 (function($){
+
 	//Connect to server
 	//Execute this before document_ready to save a time.
 	var url = "ws://rcp.tuna-cat.com/rcp";
@@ -25,8 +26,24 @@
 				});
 		}
 
+		//Wait untill UI is done.
 		rcpConnection.context.pause_execute_command();
 		rcpConnection.connectToURL(url);
+	}
+
+	//Define custom tags for uploader.
+	jQuery.fn.uploader_tags = function(){
+		var re1 = /\[img:([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\]/g;
+		var pattern1 = '<img src="http://static.tuna-cat.com/$1 />">'
+		var re2 = /\[file:([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\]/g;
+		var pattern2 = '<a href="http://static.tuna-cat.com/$1">$1</a>'
+		return this.each(function(){
+				$(this).html(
+					$(this).html()
+						.replace(re1, pattern1)
+						.replace(re2, pattern2)
+				)
+		})
 	}
 
 	//List element object bind a JSON node with a DOM node.
@@ -42,7 +59,6 @@
 				return null;
 			return rcpConnection.context.json_value_at([element.index]);
 		}
-
 
 		function setup_as_view(){
 			var box = $("#element_box_template")
@@ -154,6 +170,7 @@
 			$(element.dom_element).remove();
 		}
 
+		//Change DOM to editmode.
 		element.to_editor = function(){
 			var old_dom = element.dom_element;
 			setup_as_editor();
@@ -162,6 +179,7 @@
 			var new_dom = element.dom_element;
 			$(old_dom).replaceWith($(new_dom));
 		}
+		//Change DOM to view mode.
 		element.to_view = function(){
 			var old_dom = element.dom_element;
 			setup_as_view();
@@ -285,7 +303,7 @@
 		$("#new_handlename").focus(function(){
 			rcpConnection.ping();
 		});
-		$("$new_message_body").focus(function(){
+		$("#new_message_body").focus(function(){
 			rcpConnection.ping();
 		});
 		$("#new_message_body").keydown(function(e){
@@ -293,8 +311,54 @@
 				post_new();
 			}
 		});
+		
+		//Uploader related codes
+		$("#upload_button").click(function(){
+			var files = $("#file_selector")[0].files;
+			if (files.length != 1){
+				$("#upload_result").html("Too many or no file selected.");
+			}
+			var file = files[0];
 
+			function update_progress_bar(e){
+				if (e.lengthComputable)	{
+					$("#upload_progress")
+						.attr({value:e.loaded, max:e.total});
+				}
+			}
 
+			$("#upload_result").html(
+				'<progress id="upload_progress"></progress>');
+
+			$.ajax({
+				url:"http://static.tuna-cat.com/upload",
+				type:"POST",
+				data:file,
+				crossDomain:true,
+				cache:false,
+				contentType:false,
+				processData:false,
+				xhr:function(){
+					var xhr_object = $.ajaxSettings.xhr();
+					if (xhr_object.upload){
+						xhr_object.upload.addEventListener(
+							'progress', update_progress_bar, false);
+					}
+					return xhr_object;
+				},
+				success:function(data, status, xhr_object){
+					var uuid = data;
+					var test = $("#file_selector");
+					$("#file_selector")[0].value = "";
+					$("#upload_result").html("uuid:"+data);
+					$("#new_message_body").append("[file:"+uuid+"]");
+				},
+				error:function(xhr_object, text_status, error){
+					$("#upload_result").html(
+							"An upload failed:"+text_status);
+				},
+			});
+		})
 	});
 })(jQuery)
 
