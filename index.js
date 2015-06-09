@@ -86,7 +86,7 @@
 			j_element.children(".element_handlename")
 				.text(json_element.handlename);
 			j_element.children(".element_message_body")
-				.text(json_element.message_body);
+				.text(json_element.message_body).uploader_tags();
 			j_element.children(".edit_button")
 				.click(function(){
 						element.to_editor();
@@ -296,7 +296,6 @@
 			console.log(element);
 			rcpConnection.context.
 				request_splice([], [element], 0, 0);
-			$("#new_handlename").val("");
 			$("#new_message_body").val("");
 		}
 		$("#new_element").click(post_new);
@@ -309,6 +308,7 @@
 		$("#new_message_body").keydown(function(e){
 			if (e.keyCode === 13 && e.shiftKey){
 				post_new();
+				return false;
 			}
 		});
 		
