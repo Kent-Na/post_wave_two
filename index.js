@@ -5,14 +5,14 @@
 
 	//Connect to server
 	//Execute this before document_ready to save a time.
-	var url = "ws://rcp.tuna-cat.com/rcp";
+	var url = "ws://rcp.tuna-cat.com:5001/rcp";
 	var is_document_ready = false;
 	var rcpConnection = null;
  	{
 		var rcpConnection = rcpJS.rcpConnection();
 		rcpConnection.onopen = function(){
 			$("#server_status").text("online");
-			rcpConnection.sendOpen();
+			//rcpConnection.sendOpen();
 		}
 		rcpConnection.onerror= function(e){
 			$("#last_error").text(
@@ -20,10 +20,10 @@
 		}
 		rcpConnection.onclose= function(e){
 			$("#server_status").text(
-				"reconnecting closed");
-			setTimeout(function(){
-				rcpConnection.connectToURL(url);
-				});
+				"reconnecting server");
+			//setTimeout(function(){
+				//rcpConnection.connectToURL(url);
+				//}, 3000);
 		}
 
 		//Wait untill UI is done.
@@ -261,17 +261,34 @@
 
 		rcpConnection.context.unpause_execute_command();
 
+		$("#force_store").click(function(){
+			rcpConnection.force_store();
+			//rcpConnection.create_context();
+		});
 		$("#reset").click(function(){
 			rcpConnection.context.
 				request_set([], []);
 		});
+		var tmp = null
+		$("#to_local").click(function(){
+			tmp = rcpConnection.context.store()
+			console.log(tmp)
+			//var body = new ArrayBuffer(0);
+			//rcpConnection.sendCommand(0x7e, body);
+		});
+		$("#to_server").click(function(){
+			console.log(tmp)
+			tmp = rcpConnection.context.load()
+			//var body = new ArrayBuffer(0);
+			//rcpConnection.sendCommand(0x7e, body);
+		});
 		$("#load").click(function(){
-			var body = new ArrayBuffer(0);
-			rcpConnection.sendCommand(0x7e, body);
+			//var body = new ArrayBuffer(0);
+			//rcpConnection.sendCommand(0x7e, body);
 		});
 		$("#store").click(function(){
-			var body = new ArrayBuffer(0);
-			rcpConnection.sendCommand(0x7f, body);
+			//var body = new ArrayBuffer(0);
+			//rcpConnection.sendCommand(0x7f, body);
 		});
 		function time_string(){
 			var today = new Date();
@@ -331,7 +348,7 @@
 				'<progress id="upload_progress"></progress>');
 
 			$.ajax({
-				url:"http://static.tuna-cat.com/upload",
+				url:"http://static.tuna-cat.com:5001/upload",
 				type:"POST",
 				data:file,
 				crossDomain:true,
